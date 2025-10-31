@@ -1,5 +1,17 @@
 <?php
 session_start();
+// Call this function on pages that require authentication
+// requireLogin();
+// Determine current theme
+if (!isset($_SESSION['theme'])) {
+    $_SESSION['theme'] = 'light';
+}
+if (isset($_POST['toggle_theme'])) {
+    $_SESSION['theme'] = ($_SESSION['theme'] ?? 'light') === 'light' ? 'dark' : 'light';
+    header("Location: " . $_SERVER['PHP_SELF']); // refresh page
+    exit;
+}
+$theme = $_SESSION['theme'];
 
 // Redirect to login if user is not logged in
 function requireLogin() {
@@ -9,15 +21,10 @@ function requireLogin() {
     }
 }
 
-// Call this function on pages that require authentication
-// requireLogin();
-// Determine current theme
-if (isset($_POST['toggle_theme'])) {
-    $_SESSION['theme'] = ($_SESSION['theme'] ?? 'light') === 'light' ? 'dark' : 'light';
-}
-$theme = $_SESSION['theme'] ?? 'light';
+
 // Helper function to display header/navigation
 function renderHeader() {
+    global $theme;
     ?>
     <header style="display:flex; justify-content:space-between; align-items:center; padding:10px 20px; background:#e74c3c; color:white;">
         <div>

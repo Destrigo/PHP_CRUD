@@ -12,7 +12,7 @@ requireLogin();
     <title>StormBrainer</title>
     <link rel="stylesheet" href="style.css">
 </head>
-<body>
+<body data-theme="<?= $theme ?>">
     <h2>Problems</h2>
     <a href="create_problem.php">+ Add New Problem</a>
 

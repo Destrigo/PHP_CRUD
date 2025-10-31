@@ -33,7 +33,7 @@ $solutions = $stmt->fetchAll();
   <title><?= htmlspecialchars($problem['title']) ?> - StormBrainer</title>
   <link rel="stylesheet" href="style.css">
 </head>
-<body>
+<body data-theme="<?= $theme ?>">
 
 <main class="problem-view">
   <section class="problem-header">

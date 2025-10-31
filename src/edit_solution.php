@@ -50,7 +50,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <title>Edit Solution - StormBrainer</title>
     <link rel="stylesheet" href="style.css">
 </head>
-<body>
+<body data-theme="<?= $theme ?>">
     <h2>Edit Solution</h2>
 
     <form method="POST">

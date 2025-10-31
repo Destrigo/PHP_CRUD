@@ -29,7 +29,7 @@ if (isset($_GET['q'])) {
     <title>Search Problems - StormBrainer</title>
     <link rel="stylesheet" href="style.css">
 </head>
-<body>
+<body data-theme="<?= $theme ?>">
     <h2>🔍 Search Problems</h2>
 
     <form method="GET" action="search.php" class="search-form">

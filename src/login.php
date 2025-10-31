@@ -42,7 +42,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <title>Login - StormBrainer</title>
 	<link rel="stylesheet" href="style.css">
 </head>
-<body>
+<body data-theme="<?= $theme ?>">
     <h2>Login to StormBrainer</h2>
 
     <!-- Mostra messaggio di errore -->

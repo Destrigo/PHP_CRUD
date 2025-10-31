@@ -52,7 +52,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <title>Edit Problem - StormBrainer</title>
 	<link rel="stylesheet" href="style.css">
 </head>
-<body>
+<body data-theme="<?= $theme ?>">
     <h2>Edit Problem</h2>
 
     <form method="POST">

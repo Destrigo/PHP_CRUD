@@ -19,7 +19,7 @@ $problems = $stmt->fetchAll();
     <link rel="stylesheet" href="style.css">
     <?php renderHeader(); ?>
 </head>
-<body>
+<body data-theme="<?= $theme ?>">
     <h2>My Problems</h2>
     <a href="create_problem.php">+ Add New Problem</a>
 
