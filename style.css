@@ -175,3 +175,68 @@ footer {
     font-size: 0.9em;
     color: #7f8c8d;
 }
+
+/*bubbles*/
+.solution-bubbles {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+
+  /* Remove gaps between bubbles */
+  gap: 0;
+  margin: -10px; /* helps remove spacing caused by padding */
+}
+
+.solution-bubble {
+  --size: 100px;
+  width: var(--size);
+  height: var(--size);
+
+  border-radius: 50%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+
+  background: radial-gradient(circle at 30% 30%, #8ee7f1, #3fb68b);
+  color: #fff;
+  text-align: center;
+  padding: 10px;
+  margin: -5px; /* negative margin makes circles touch */
+  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  overflow: hidden;
+}
+
+.solution-bubble:hover {
+  transform: scale(1.07);
+  box-shadow: 0 6px 20px rgba(0,0,0,0.25);
+  z-index: 10; /* brings hovered bubble to front */
+}
+
+.bubble-text {
+  font-size: clamp(0.8rem, 2vw, 0.95rem);
+  line-height: 1.2em;
+  text-align: center;
+}
+
+.rating {
+  display: block;
+  margin-top: 6px;
+  font-weight: bold;
+  font-size: 0.85em;
+  color: rgba(255,255,255,0.9);
+}
+
+.bubble-actions {
+  display: none; /* hide small actions inside */
+}
+
+/*shrinks on smaller screens*/
+@media (max-width: 600px) {
+  .solution-bubble {
+    --size: calc(var(--size) * 0.8);
+  }
+}
