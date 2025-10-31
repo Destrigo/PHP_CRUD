@@ -2,12 +2,15 @@
 include 'db.php';
 
 session_start();
+
+// Check if user is logged in
 if (!isset($_SESSION['user_id'])) {
     header("Location: login.php");
     exit;
 }
 
 $user_id = $_SESSION['user_id'];
+
 $stmt = $conn->prepare("INSERT INTO problems (title, description, user_id) VALUES (:title, :description, :user_id)");
 $stmt->execute(['title'=>$title, 'description'=>$description, 'user_id'=>$user_id]);
 

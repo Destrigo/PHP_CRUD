@@ -2,10 +2,14 @@
 include 'db.php'; // Connect to database
 
 session_start();
+
+// Check if user is logged in
 if (!isset($_SESSION['user_id'])) {
     header("Location: login.php");
     exit;
 }
+
+$user_id = $_SESSION['user_id'];
 
 // Check if solution ID is provided
 if (!isset($_GET['id'])) {
