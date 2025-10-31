@@ -1,5 +1,11 @@
 <?php include 'db.php';
 
+session_start();
+if (!isset($_SESSION['user_id'])) {
+    header("Location: login.php");
+    exit;
+}
+
 $id = $_GET['id'];
 // Fetch the problem
 $stmt = $conn->prepare("SELECT * FROM problems WHERE id=:id");
