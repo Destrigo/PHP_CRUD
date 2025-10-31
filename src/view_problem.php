@@ -1,11 +1,8 @@
 <?php
 include 'db.php';
 include 'auth.php';
-
 // Ensure the user is logged in
 requireLogin();
-renderHeader();
-
 $user_id = $_SESSION['user_id'];
 
 // Get problem ID

@@ -1,8 +1,8 @@
 <?php
-$servername = "localhost";
+$servername = "db";
 $username = "root";        // your MySQL username
-$password = "";            // your MySQL password
-$dbname = "StormBrainer";
+$password = "root";            // your MySQL password
+$dbname = "stormbrainer";
 
 try {
     $conn = new PDO("mysql:host=$servername;dbname=$dbname", $username, $password);

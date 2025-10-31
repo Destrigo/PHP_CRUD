@@ -1,9 +1,7 @@
 <?php include 'db.php'; 
 include 'auth.php';
-
 // Redirect to login if not logged in
 requireLogin();
-
 // Render the main header/navigation
 // renderHeader();
 ?>

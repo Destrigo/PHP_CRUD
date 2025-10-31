@@ -1,12 +1,8 @@
 <?php
 include 'db.php';
 include 'auth.php';
-
 // Redirect to login if not logged in
 requireLogin();
-
-// Render the main header/navigation
-renderHeader();
 
 $user_id = $_SESSION['user_id'];
 
@@ -21,6 +17,7 @@ $problems = $stmt->fetchAll();
 <head>
     <title>My Problems - StormBrainer</title>
     <link rel="stylesheet" href="style.css">
+    <?php renderHeader(); ?>
 </head>
 <body>
     <h2>My Problems</h2>

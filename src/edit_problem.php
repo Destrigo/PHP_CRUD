@@ -1,10 +1,8 @@
 <?php
 include 'db.php'; // Connect to database
 include 'auth.php';
-
 // Redirect to login if not logged in
 requireLogin();
-
 // Render the main header/navigation
 renderHeader();
 

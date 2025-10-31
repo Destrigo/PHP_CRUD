@@ -1,7 +1,6 @@
 <?php
 include 'db.php'; // Connect to the database
 include 'auth.php';
-
 // Redirect to login if not logged in
 requireLogin();
 

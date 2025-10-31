@@ -1,0 +1,21 @@
+version: "3.8"
+
+services:
+  php:
+    build: .
+    container_name: stormbrainer-php
+    ports:
+      - "8080:80"
+    depends_on:
+      - db
+    volumes:
+      - ./src:/var/www/html
+
+  db:
+    image: mysql:8
+    container_name: stormbrainer-db
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: stormbrainer
+    ports:
+      - "3306:3306"
