@@ -1,0 +1,20 @@
+Browser (HTTP Request)
+       |
+       v
+  PHP Script (index.php)
+       |
+       v
+   include 'db.php' → create $conn
+       |
+       v
+  PDO Object ($conn) -----> Connects to MySQL
+       |                         |
+       |                         v
+       |                   MySQL Database
+       |                         |
+       | <------ Returns query results
+       v
+  PHP Script generates HTML
+       |
+       v
+Browser displays HTML

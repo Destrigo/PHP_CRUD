@@ -1,37 +1,29 @@
-<?php
-echo "<h1>Welcome to PHP CRUD Learning!</h1>";
+<?php include 'db.php'; ?>
 
-//Declarations
-$name = "Alice";     // string
-$age = 25;           // integer
-$price = 19.99;      // float
-$isAdmin = true;     // boolean
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Problem Tracker</title>
+</head>
+<body>
+    <h2>Problems</h2>
+    <a href="create_problem.php">+ Add New Problem</a>
 
-echo "$name is $age years old and costs $price USD. Admin? $isAdmin";
+    <?php
+    $stmt = $conn->query("SELECT * FROM problems ORDER BY created_at DESC");
+    $problems = $stmt->fetchAll();
+    ?>
 
-//Arrays
-$fruits = ["Apple", "Banana", "Cherry"];
-echo $fruits[0];  // Apple
-
-$person = [
-    "name" => "Alice",
-    "age" => 25
-];
-echo $person["name"];  // Alice
-
-//Conditional Statements
-$age = 20;
-
-if ($age >= 18) {
-    echo "You are an adult.";
-} else {
-    echo "You are a minor.";
-}
-
-//Loops
-$numbers = [1, 2, 3, 4, 5];
-
-foreach($numbers as $num){
-    echo "Number: $num <br>";
-}
-?>
+    <ul>
+        <?php foreach($problems as $problem): ?>
+        <li>
+            <a href="view_problem.php?id=<?= $problem['id'] ?>">
+                <?= htmlspecialchars($problem['title']) ?>
+            </a>
+            [<a href="edit_problem.php?id=<?= $problem['id'] ?>">Edit</a>]
+            [<a href="delete_problem.php?id=<?= $problem['id'] ?>">Delete</a>]
+        </li>
+        <?php endforeach; ?>
+    </ul>
+</body>
+</html>
