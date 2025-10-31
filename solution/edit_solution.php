@@ -1,9 +1,22 @@
 <?php
 include 'db.php'; // Connect to database
+include 'auth.php';
+
+// Redirect to login if not logged in
+requireLogin();
+
+// Render the main header/navigation
+renderHeader();
+
+$user_id = $_SESSION['user_id'];
 
 // Check if solution ID is provided
 if (!isset($_GET['id'])) {
     die("Solution ID not specified.");
+}
+
+if ($problem['user_id'] != $_SESSION['user_id']) {
+    die("You are not authorized to edit this problem.");
 }
 
 $id = $_GET['id'];

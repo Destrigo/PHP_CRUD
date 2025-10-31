@@ -1,4 +1,12 @@
-<?php include 'db.php'; ?>
+<?php include 'db.php'; 
+include 'auth.php';
+
+// Redirect to login if not logged in
+requireLogin();
+
+// Render the main header/navigation
+// renderHeader();
+?>
 
 <!DOCTYPE html>
 <html>
@@ -20,6 +28,17 @@
             <a href="view_problem.php?id=<?= $problem['id'] ?>">
                 <?= htmlspecialchars($problem['title']) ?>
             </a>
+            <p>Rating: <?= $problem['rating'] ?></p>
+
+            <?php if ($problem['user_id'] != $_SESSION['user_id']): ?>
+            <form method="POST" action="rate.php">
+                <input type="hidden" name="entity_type" value="problem">
+                <input type="hidden" name="entity_id" value="<?= $problem['id'] ?>">
+                <button type="submit">+1</button>
+            </form>
+            <?php else: ?>
+            <p>You cannot +1 your own problem</p>
+            <?php endif; ?>
             [<a href="edit_problem.php?id=<?= $problem['id'] ?>">Edit</a>]
             [<a href="delete_problem.php?id=<?= $problem['id'] ?>">Delete</a>]
         </li>

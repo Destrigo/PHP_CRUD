@@ -1,5 +1,16 @@
 <?php
 include 'db.php';
+include 'auth.php';
+
+// Redirect to login if not logged in
+requireLogin();
+
+// Render the main header/navigation
+renderHeader();
+
+$user_id = $_SESSION['user_id'];
+$stmt = $conn->prepare("INSERT INTO problems (title, description, user_id) VALUES (:title, :description, :user_id)");
+$stmt->execute(['title'=>$title, 'description'=>$description, 'user_id'=>$user_id]);
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $title = $_POST['title'];
