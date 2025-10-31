@@ -20,6 +20,7 @@ $problems = $stmt->fetchAll();
 <html>
 <head>
     <title>My Problems - StormBrainer</title>
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
     <h2>My Problems</h2>

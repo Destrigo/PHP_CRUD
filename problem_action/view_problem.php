@@ -35,6 +35,7 @@ $solutions = $stmt->fetchAll();
 <html>
 <head>
     <title><?= htmlspecialchars($problem['title']) ?> - StormBrainer</title>
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
     <h2><?= htmlspecialchars($problem['title']) ?></h2>

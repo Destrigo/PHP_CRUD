@@ -57,6 +57,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 <html>
 <head>
     <title>Register - StormBrainer</title>
+	<link rel="stylesheet" href="style.css">
 </head>
 <body>
     <h2>Register for StormBrainer</h2>

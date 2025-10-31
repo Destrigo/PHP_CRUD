@@ -12,6 +12,7 @@ requireLogin();
 <html>
 <head>
     <title>StormBrainer</title>
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
     <h2>Problems</h2>

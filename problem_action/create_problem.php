@@ -27,6 +27,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 <!DOCTYPE html>
 <html>
 <head><title>Add Problem</title></head>
+<link rel="stylesheet" href="style.css">
 <body>
 <h2>Add Problem</h2>
 <form method="POST">

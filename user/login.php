@@ -40,6 +40,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 <html>
 <head>
     <title>Login - StormBrainer</title>
+	<link rel="stylesheet" href="style.css">
 </head>
 <body>
     <h2>Login to StormBrainer</h2>
