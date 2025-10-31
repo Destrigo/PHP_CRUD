@@ -3,7 +3,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Problem Tracker</title>
+    <title>StormBrainer</title>
 </head>
 <body>
     <h2>Problems</h2>

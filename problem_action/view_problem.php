@@ -30,6 +30,7 @@ $solutions = $stmt->fetchAll();
 <?php endforeach; ?>
 </ul>
 
+<!---this is a button for adding a solution to the problem --->
 <h4>Add a Solution</h4>
 <form method="POST" action="add_solution.php">
     <input type="hidden" name="problem_id" value="<?= $problem['id'] ?>">

@@ -18,3 +18,66 @@ Browser (HTTP Request)
        |
        v
 Browser displays HTML
+
+
+[Browser]       POST /create_problem.php
+   |          ----------------------->
+   |          Body: title=Bug&description=App crashes
+   |
+   | <-----------------------
+[Server]      Response: redirect to index.php
+Use POST for creating/updating problems or solutions.
+
+Use GET for reading/viewing problems or solutions.
+[Browser]       GET /view_problem.php?id=3
+   |          ----------------------->
+   |
+   | <-----------------------
+[Server]      PHP reads $_GET['id'] = 3
+              Queries database for problem #3
+              Generates HTML page
+[Browser]      Displays problem and solutions
+
+
+// Database Structure
+
++----------------+           +----------------+
+|   problems     |           |   solutions    |
++----------------+           +----------------+
+| id (PK)        |<------+   | id (PK)       |
+| title          |       |   | problem_id (FK)|
+| description    |       +---| content       |
+| created_at     |           | created_at    |
++----------------+           +----------------+
+
+//Page Flow & CRUD Mapping
+
+[ index.php ]  -- Lists all Problems
+   |  + Add Problem  --> [ create_problem.php ] (Create Problem)
+   |  Click title     --> [ view_problem.php?id=... ] (Read Problem + list Solutions)
+   |  Edit link       --> [ edit_problem.php?id=... ] (Update Problem)
+   |  Delete link     --> [ delete_problem.php?id=... ] (Delete Problem)
+
+[ view_problem.php?id=...] -- Show Problem details + Solutions
+   |  + Add Solution --> [ add_solution.php ] (Create Solution)
+   |  Edit Solution  --> [ edit_solution.php?id=...] (Update Solution)
+   |  Delete Solution--> [ delete_solution.php?id=...] (Delete Solution)
+
+//How Data Flows
+
+[ Browser ]
+    |
+    | GET/POST Requests
+    v
+[ PHP Pages ]
+    | include db.php
+    | use PDO to query/modify database
+    v
+[ MySQL Database ]
+    | problems table
+    | solutions table
+    v
+[ PHP Pages generate HTML ]
+    |
+    v
+[ Browser renders page ]
