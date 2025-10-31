@@ -11,7 +11,11 @@ function requireLogin() {
 
 // Call this function on pages that require authentication
 // requireLogin();
-
+// Determine current theme
+if (isset($_POST['toggle_theme'])) {
+    $_SESSION['theme'] = ($_SESSION['theme'] ?? 'light') === 'light' ? 'dark' : 'light';
+}
+$theme = $_SESSION['theme'] ?? 'light';
 // Helper function to display header/navigation
 function renderHeader() {
     ?>
@@ -30,6 +34,12 @@ function renderHeader() {
                 <a href="login.php" style="color:white; margin-right:15px;">Login</a>
                 <a href="register.php" style="color:white;">Register</a>
             <?php endif; ?>
+            <form method="POST" style="display:inline">
+                <button type="submit" name="toggle_theme" class="btn tiny">
+                    <?= $theme === 'light' ? '🌙 Dark Mode' : '☀️ Light Mode' ?>
+                </button>
+            </form>
+
         </nav>
     </header>
     <hr>

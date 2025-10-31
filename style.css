@@ -1,14 +1,27 @@
 /* ====== GENERAL RESET ====== */
-* {
-    box-sizing: border-box;
-    margin: 0;
-    padding: 0;
-    font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+:root {
+    --bg-color: #fff;
+    --text-color: #222;
+    --header-bg: #e74c3c;
+    --link-color: white;
+    --problem-card-bg: #fdfdfd;
+    --bubble-gradient-start: #8ee7f1;
+    --bubble-gradient-end: #3fb68b;
+}
+
+[data-theme="dark"] {
+    --bg-color: #1e1e1e;
+    --text-color: #eee;
+    --header-bg: #c0392b;
+    --link-color: #f1f1f1;
+    --problem-card-bg: #2c2c2c;
+    --bubble-gradient-start: #3fb68b;
+    --bubble-gradient-end: #1a6b4d;
 }
 
 body {
-    background-color: #f4f6f8;
-    color: #2c3e50;
+    background-color: var(--bg-color);
+    color: var(--text-color);
     margin: 0;
     padding: 0 10%;
 }
@@ -18,14 +31,14 @@ header {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    background-color: #e74c3c;
+    background-color: var(--header-bg);
     color: white;
     padding: 15px 10%;
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
 }
 
 header a {
-    color: white;
+    color: var(--link-color);
     text-decoration: none;
     margin-right: 15px;
     font-weight: 500;
@@ -43,6 +56,22 @@ header div a {
 
 header nav a:last-child {
     font-weight: bold;
+}
+/*header DarkMode Button*/
+
+header form button {
+    background: none;
+    border: 1px solid var(--link-color);
+    color: var(--link-color);
+    padding: 5px 10px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: bold;
+    transition: 0.2s;
+}
+
+header form button:hover {
+    opacity: 0.8;
 }
 
 
@@ -81,8 +110,8 @@ button:hover, .btn:hover {
 }
 
 /* ====== CARD STYLE ====== */
-.card {
-    background-color: white;
+.problem-card {
+    background-color: var(--problem-card-bg);
     border-radius: 10px;
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
     padding: 20px;
@@ -204,7 +233,7 @@ footer {
   justify-content: center;
   align-items: center;
 
-  background: radial-gradient(circle at 30% 30%, #8ee7f1, #3fb68b);
+  background: radial-gradient(circle at 30% 30%, var(--bubble-gradient-start), var(--bubble-gradient-end));;
   color: #fff;
   text-align: center;
   padding: 10px;
