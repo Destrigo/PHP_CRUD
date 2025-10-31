@@ -1,13 +1,12 @@
 <?php
 include 'db.php';
+include 'auth.php';
 
-session_start();
+// Redirect to login if not logged in
+requireLogin();
 
-// Check if user is logged in
-if (!isset($_SESSION['user_id'])) {
-    header("Location: login.php");
-    exit;
-}
+// Render the main header/navigation
+renderHeader();
 
 $user_id = $_SESSION['user_id'];
 $stmt = $conn->prepare("INSERT INTO problems (title, description, user_id) VALUES (:title, :description, :user_id)");

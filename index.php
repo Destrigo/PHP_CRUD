@@ -7,6 +7,20 @@ if (!isset($_SESSION['user_id'])) {
 }
 ?>
 
+<?php if (isset($_SESSION['user_id'])): ?>
+    <nav>
+        <a href="index.php">All Problems</a> |
+        <a href="my_problems.php">My Problems</a> |
+        <a href="create_problem.php">+ Add Problem</a> |
+        <a href="logout.php">Logout</a>
+    </nav>
+<?php else: ?>
+    <nav>
+        <a href="login.php">Login</a> |
+        <a href="register.php">Register</a>
+    </nav>
+<?php endif; ?>
+
 <!DOCTYPE html>
 <html>
 <head>

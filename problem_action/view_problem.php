@@ -1,12 +1,12 @@
 <?php
 include 'db.php';
-session_start();
+include 'auth.php';
 
-// Check if user is logged in
-if (!isset($_SESSION['user_id'])) {
-    header("Location: login.php");
-    exit;
-}
+// Redirect to login if not logged in
+requireLogin();
+
+// Render the main header/navigation
+renderHeader();
 
 $user_id = $_SESSION['user_id'];
 

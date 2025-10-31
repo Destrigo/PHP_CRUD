@@ -1,10 +1,10 @@
 <?php
 include 'db.php';
-session_start();
 
-if (!isset($_SESSION['user_id'])) {
-    die("You must be logged in to vote.");
-}
+include 'auth.php';
+
+// Redirect to login if not logged in
+requireLogin();
 
 $user_id = $_SESSION['user_id'];
 $entity_type = $_POST['entity_type'];
