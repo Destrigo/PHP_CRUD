@@ -24,6 +24,7 @@ function renderHeader() {
                 <a href="index.php" style="color:white; margin-right:15px;">All Problems</a>
                 <a href="my_problems.php" style="color:white; margin-right:15px;">My Problems</a>
                 <a href="create_problem.php" style="color:white; margin-right:15px;">+ Add Problem</a>
+                <a href="search.php">Search</a>
                 <a href="logout.php" style="color:white;">Logout</a>
             <?php else: ?>
                 <a href="login.php" style="color:white; margin-right:15px;">Login</a>
