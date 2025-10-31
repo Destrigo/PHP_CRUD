@@ -41,6 +41,11 @@ header div a {
     font-size: 1.2em;
 }
 
+header nav a:last-child {
+    font-weight: bold;
+}
+
+
 /* ====== MAIN CONTENT ====== */
 h1, h2, h3, h4 {
     color: #34495e;
