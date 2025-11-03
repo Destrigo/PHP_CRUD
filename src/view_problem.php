@@ -34,7 +34,9 @@ $solutions = $stmt->fetchAll();
   <link rel="stylesheet" href="style.css">
 </head>
 <body data-theme="<?= $theme ?>">
-
+<div class="stars"></div>
+<div class="stars2"></div>
+<div class="stars3"></div>
 <main class="problem-view">
   <section class="problem-header">
     <h2><?= htmlspecialchars($problem['title']) ?></h2>

@@ -20,6 +20,9 @@ $problems = $stmt->fetchAll();
     <?php renderHeader(); ?>
 </head>
 <body data-theme="<?= $theme ?>">
+<div class="stars"></div>
+<div class="stars2"></div>
+<div class="stars3"></div>
     <h2>My Problems</h2>
     <a href="create_problem.php">+ Add New Problem</a>
 

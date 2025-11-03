@@ -30,6 +30,9 @@ if (isset($_GET['q'])) {
     <link rel="stylesheet" href="style.css">
 </head>
 <body data-theme="<?= $theme ?>">
+<div class="stars"></div>
+<div class="stars2"></div>
+<div class="stars3"></div>
     <h2>🔍 Search Problems</h2>
 
     <form method="GET" action="search.php" class="search-form">

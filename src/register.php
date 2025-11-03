@@ -60,6 +60,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 	<link rel="stylesheet" href="style.css">
 </head>
 <body data-theme="<?= $theme ?>">
+<div class="stars"></div>
+<div class="stars2"></div>
+<div class="stars3"></div>
     <h2>Register for StormBrainer</h2>
 
     <!-- Show error if any -->

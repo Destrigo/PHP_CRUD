@@ -30,6 +30,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <title>Create Problem - StormBrainer</title>
 </head>
 <body data-theme="<?= $theme ?>">
+<div class="stars"></div>
+<div class="stars2"></div>
+<div class="stars3"></div>
     <h2>Add New Problem</h2>
     <?php if(isset($error)) echo "<p style='color:red;'>$error</p>"; ?>
     <form method="POST">

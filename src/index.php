@@ -13,6 +13,9 @@ renderHeader();
     <link rel="stylesheet" href="style.css">
 </head>
 <body data-theme="<?= $theme ?>">
+<div class="stars"></div>
+<div class="stars2"></div>
+<div class="stars3"></div>
     <h2>Problems</h2>
     <a href="create_problem.php">+ Add New Problem</a>
 
