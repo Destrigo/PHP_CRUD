@@ -342,3 +342,77 @@ body[data-theme="light"] .stars2,
 body[data-theme="light"] .stars3 {
   display: none;
 }
+
+/* === SOLUZIONI COME PIANETI === */
+.solution-space {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 30px;
+  justify-content: center;
+  margin-top: 40px;
+  position: relative;
+  perspective: 800px;
+}
+
+/* Pianeta base */
+.planet {
+  width: var(--size);
+  height: var(--size);
+  border-radius: 50%;
+  background: radial-gradient(circle at 30% 30%, #4fc3f7, #01579b);
+  box-shadow: 0 0 25px rgba(79, 195, 247, 0.6);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-weight: bold;
+  text-align: center;
+  cursor: pointer;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  overflow: hidden;
+  font-size: 0.9em;
+  animation: float 6s ease-in-out infinite;
+}
+
+/* Effetto galleggiante */
+@keyframes float {
+  0%, 100% { transform: translateY(0px) rotate(0deg); }
+  50% { transform: translateY(-10px) rotate(1deg); }
+}
+
+/* Hover: pianeta si ingrandisce e brilla */
+.planet:hover {
+  transform: scale(1.2);
+  box-shadow: 0 0 40px rgba(79, 195, 247, 0.9);
+}
+
+/* Dettaglio testo visibile al passaggio */
+#solution-detail {
+  position: fixed;
+  bottom: 30px;
+  left: 50%;
+  transform: translateX(-50%);
+  min-width: 300px;
+  max-width: 600px;
+  background: rgba(0, 0, 0, 0.85);
+  color: white;
+  padding: 15px 20px;
+  border-radius: 15px;
+  text-align: center;
+  display: none;
+  z-index: 999;
+  box-shadow: 0 0 25px rgba(255, 255, 255, 0.2);
+}
+
+/* Modalità chiara */
+body[data-theme="light"] #solution-detail {
+  background: rgba(255, 255, 255, 0.9);
+  color: #111;
+}
+
+/* Pianeti con colori casuali */
+.planet:nth-child(5n+1) { background: radial-gradient(circle at 30% 30%, #ffb347, #ff6b6b); }
+.planet:nth-child(5n+2) { background: radial-gradient(circle at 30% 30%, #81ecec, #0984e3); }
+.planet:nth-child(5n+3) { background: radial-gradient(circle at 30% 30%, #a29bfe, #6c5ce7); }
+.planet:nth-child(5n+4) { background: radial-gradient(circle at 30% 30%, #fab1a0, #d63031); }
+.planet:nth-child(5n+5) { background: radial-gradient(circle at 30% 30%, #55efc4, #00b894); }
