@@ -13,9 +13,7 @@ if (!isset($_GET['id'])) {
     die("Problem ID not specified.");
 }
 
-if ($problem['user_id'] != $_SESSION['user_id']) {
-    die("You are not authorized to edit this problem.");
-}
+$problem_id = $_GET['id'];
 
 $id = $_GET['id'];
 
@@ -26,6 +24,9 @@ $problem = $stmt->fetch();
 
 if (!$problem) {
     die("Problem not found.");
+}
+if ($problem['user_id'] != $_SESSION['user_id']) {
+    die("You are not authorized to edit this problem.");
 }
 
 // Handle form submission

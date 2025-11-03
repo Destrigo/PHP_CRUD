@@ -8,7 +8,8 @@ if (!isset($_SESSION['theme'])) {
 }
 if (isset($_POST['toggle_theme'])) {
     $_SESSION['theme'] = ($_SESSION['theme'] ?? 'light') === 'light' ? 'dark' : 'light';
-    header("Location: " . $_SERVER['PHP_SELF']); // refresh page
+    $qs = $_SERVER['QUERY_STRING'] ? '?' . $_SERVER['QUERY_STRING'] : '';
+    header("Location: " . $_SERVER['PHP_SELF'] . $qs);
     exit;
 }
 $theme = $_SESSION['theme'];
@@ -42,6 +43,7 @@ function renderHeader() {
                 <a href="register.php" style="color:white;">Register</a>
             <?php endif; ?>
             <form method="POST" style="display:inline">
+                <input type="hidden" name="problem_id" value="<?= htmlspecialchars($_GET['id'] ?? '') ?>">
                 <button type="submit" name="toggle_theme" class="btn tiny">
                     <?= $theme === 'light' ? '🌙 Dark Mode' : '☀️ Light Mode' ?>
                 </button>
