@@ -25,6 +25,7 @@ $stmt->execute(['problem_id' => $problem_id]);
 $solutions = $stmt->fetchAll();
 
 $theme = $_SESSION['theme'] ?? 'light';
+renderHeader();
 ?>
 
 <!DOCTYPE html>
@@ -48,7 +49,6 @@ $theme = $_SESSION['theme'] ?? 'light';
       left: 50%;
       border-radius: 50%;
       transform-origin: -50% center;
-      animation: orbit linear infinite;
       display: flex;
       align-items: center;
       justify-content: center;
@@ -58,6 +58,7 @@ $theme = $_SESSION['theme'] ?? 'light';
       text-shadow: 0 0 5px rgba(0,0,0,0.8);
       cursor: pointer;
       transition: transform 0.3s ease;
+      animation: orbit 30s linear infinite;
     }
 
     .solution-planet:hover {
@@ -161,19 +162,19 @@ $theme = $_SESSION['theme'] ?? 'light';
         <div class="planet-container">
           <?php 
           $planets = ['mercury','venus','earth','mars','jupiter','saturn','uranus','neptune'];
+          $count = count($solutions);
           foreach ($solutions as $index => $s):
             $planet = $planets[array_rand($planets)];
             $rating = max(1, (int)$s['rating']);
             $size = 40 + ($rating * 6);
-            $orbit = 120 + ($index * 50);
-            $speed = 10 + $index * 5;
+            $orbit = 150 + ($index * 60); // each further out
+            $angle = ($index / $count) * 360; // different starting angles
           ?>
             <div class="solution-planet <?= $planet ?>"
               style="
                 width: <?= $size ?>px;
                 height: <?= $size ?>px;
-                animation-duration: <?= $speed ?>s;
-                transform: rotate(0deg) translateX(<?= $orbit ?>px);
+                transform: rotate(<?= $angle ?>deg) translateX(<?= $orbit ?>px);
               "
               data-full="<?= htmlspecialchars($s['content']) ?>"
               data-rating="<?= $rating ?>"

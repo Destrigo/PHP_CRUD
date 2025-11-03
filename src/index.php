@@ -1,28 +1,32 @@
-<?php 
-include 'db.php'; 
+<?php
+include 'db.php';
 include 'auth.php';
 requireLogin();
 renderHeader();
 
-// Load theme from session
 $theme = $_SESSION['theme'] ?? 'light';
 
-// Fetch all problems
+// Fetch problems
 $stmt = $conn->query("SELECT * FROM problems ORDER BY created_at DESC");
 $problems = $stmt->fetchAll();
 ?>
 
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
+  <meta charset="UTF-8">
   <title>StormBrainer</title>
   <link rel="stylesheet" href="style.css">
   <style>
+    body {
+      overflow: hidden;
+    }
+
     .planet-container {
       position: relative;
       display: grid;
       place-items: center;
-      min-height: 90vh;
+      min-height: 85vh;
       overflow: hidden;
     }
 
@@ -32,20 +36,20 @@ $problems = $stmt->fetchAll();
       left: 50%;
       border-radius: 50%;
       transform-origin: -50% center;
-      animation: orbit linear infinite;
       display: flex;
       align-items: center;
       justify-content: center;
       color: white;
-      text-align: center;
-      font-size: 0.8em;
+      font-size: 0.9em;
       text-shadow: 0 0 5px rgba(0,0,0,0.8);
       cursor: pointer;
       transition: transform 0.3s ease;
+      animation: orbit 40s linear infinite;
+      text-align: center;
     }
 
     .problem-planet:hover {
-      transform: scale(1.2) translate(-50%, -50%);
+      transform: scale(1.15) translate(-50%, -50%);
       z-index: 5;
     }
 
@@ -53,7 +57,6 @@ $problems = $stmt->fetchAll();
       to { transform: rotate(360deg); }
     }
 
-    /* Tooltip for problem details */
     .problem-tooltip {
       position: fixed;
       bottom: 30px;
@@ -66,7 +69,7 @@ $problems = $stmt->fetchAll();
       text-align: center;
       display: none;
       z-index: 999;
-      max-width: 400px;
+      max-width: 500px;
     }
 
     body[data-theme="light"] .problem-tooltip {
@@ -74,8 +77,26 @@ $problems = $stmt->fetchAll();
       color: #111;
     }
 
-    /* Hide default list */
-    ul, li { list-style: none; padding: 0; margin: 0; }
+    .add-btn {
+      display: inline-block;
+      margin: 20px auto;
+      padding: 10px 18px;
+      border-radius: 10px;
+      background: #2e86de;
+      color: white;
+      text-decoration: none;
+      font-weight: bold;
+      transition: background 0.3s;
+    }
+
+    .add-btn:hover {
+      background: #1b4f9c;
+    }
+
+    h2 {
+      text-align: center;
+      margin-top: 1.5rem;
+    }
   </style>
 </head>
 
@@ -97,44 +118,69 @@ $problems = $stmt->fetchAll();
     </ol>
   </div>
 
-  <main class="planet-container">
-    <a href="create_problem.php" class="btn" style="position:absolute;top:10px;left:10px;">+ Add New Problem</a>
+  <main>
+    <h2>Problems</h2>
+    <div style="text-align:center;">
+      <a href="create_problem.php" class="add-btn">+ Add New Problem</a>
+    </div>
 
-    <?php 
-    // Planets classes
-    $planets = ['mercury','venus','earth','mars','jupiter','saturn','uranus','neptune'];
-
-    foreach ($problems as $index => $problem):
-      $planet = $planets[array_rand($planets)];
-      $rating = max(1, (int)$problem['rating']);
-      $size = 40 + ($rating * 5); // 1->45px, 10->90px
-      $orbit = 100 + ($index * 40); // spacing orbits
-      $speed = 10 + $index * 5; // seconds per rotation
-    ?>
-      <div class="problem-planet"
-        style="
-          width: <?= $size ?>px;
-          height: <?= $size ?>px;
-          background: radial-gradient(circle, var(--bubble-gradient-start), var(--bubble-gradient-end));
-          animation-duration: <?= $speed ?>s;
-          transform: rotate(0deg) translateX(<?= $orbit ?>px);
-        "
-        data-title="<?= htmlspecialchars($problem['title']) ?>"
-        data-rating="<?= htmlspecialchars($problem['rating']) ?>"
-        data-id="<?= $problem['id'] ?>"
-      >
-        <?= htmlspecialchars(substr($problem['title'], 0, 10)) ?>...
+    <?php if (count($problems) === 0): ?>
+      <p style="text-align:center;">No problems yet. Add one to start the galaxy!</p>
+    <?php else: ?>
+      <div class="planet-container">
+        <?php 
+        $planets = ['mercury','venus','earth','mars','jupiter','saturn','uranus','neptune'];
+        $count = count($problems);
+        foreach ($problems as $i => $p):
+          $planet = $planets[array_rand($planets)];
+          $rating = max(1, (int)$p['rating']);
+          $size = 45 + ($rating * 7);
+          $orbit = 180 + ($i * 70);
+          $angle = ($i / $count) * 360;
+        ?>
+          <div 
+            class="problem-planet <?= $planet ?>" 
+            style="width: <?= $size ?>px; height: <?= $size ?>px; transform: rotate(<?= $angle ?>deg) translateX(<?= $orbit ?>px);"
+            data-id="<?= $p['id'] ?>"
+            data-title="<?= htmlspecialchars($p['title']) ?>"
+            data-rating="<?= $rating ?>"
+            data-user="<?= $p['user_id'] ?>"
+          >
+            <?= htmlspecialchars(substr($p['title'], 0, 10)) ?>...
+          </div>
+        <?php endforeach; ?>
       </div>
-    <?php endforeach; ?>
+    <?php endif; ?>
   </main>
 
-  <div id="tooltip" class="problem-tooltip"></div>
+  <div id="problem-tooltip" class="problem-tooltip"></div>
 
   <script>
-    const tooltip = document.getElementById('tooltip');
+    const tooltip = document.getElementById('problem-tooltip');
+    const userId = <?= json_encode($_SESSION['user_id']) ?>;
+
     document.querySelectorAll('.problem-planet').forEach(p => {
       p.addEventListener('mouseenter', () => {
-        tooltip.innerHTML = `<strong>${p.dataset.title}</strong><br>Rating: ${p.dataset.rating}<br><a href="view_problem.php?id=${p.dataset.id}" style="color:#58a6ff;">View Problem</a>`;
+        const id = p.dataset.id;
+        const title = p.dataset.title;
+        const rating = p.dataset.rating;
+        const author = parseInt(p.dataset.user);
+
+        let html = `<strong>${title}</strong><br>⭐ ${rating} points<br><br>
+        <a href="view_problem.php?id=${id}" class="btn tiny">View</a> `;
+
+        if (author === userId) {
+          html += `<a href="edit_problem.php?id=${id}" class="btn tiny">Edit</a>
+          <a href="delete_problem.php?id=${id}" class="btn tiny danger">Delete</a>`;
+        } else {
+          html += `<form method='POST' action='rate.php' style='display:inline;'>
+            <input type='hidden' name='entity_type' value='problem'>
+            <input type='hidden' name='entity_id' value='${id}'>
+            <button class='btn tiny'>+1</button>
+          </form>`;
+        }
+
+        tooltip.innerHTML = html;
         tooltip.style.display = 'block';
       });
       p.addEventListener('mouseleave', () => {
