@@ -35,8 +35,6 @@ renderHeader();
                 <input type="hidden" name="entity_id" value="<?= $problem['id'] ?>">
                 <button type="submit">+1</button>
             </form>
-            <?php else: ?>
-            <p>You cannot +1 your own problem</p>
             <?php endif; ?>
             [<a href="edit_problem.php?id=<?= $problem['id'] ?>">Edit</a>]
             [<a href="delete_problem.php?id=<?= $problem['id'] ?>">Delete</a>]
