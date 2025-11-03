@@ -2,16 +2,25 @@
 include 'db.php';
 include 'auth.php';
 requireLogin();
+
 $user_id = $_SESSION['user_id'];
 
-if (!isset($_GET['id'])) die("Problem ID not specified.");
+// Get problem ID
+if (!isset($_GET['id'])) {
+    die("Problem ID not specified.");
+}
 $problem_id = $_GET['id'];
 
+// Fetch problem
 $stmt = $conn->prepare("SELECT * FROM problems WHERE id = :id");
 $stmt->execute(['id' => $problem_id]);
 $problem = $stmt->fetch();
-if (!$problem) die("Problem not found.");
 
+if (!$problem) {
+    die("Problem not found.");
+}
+
+// Fetch solutions
 $stmt = $conn->prepare("SELECT * FROM solutions WHERE problem_id = :problem_id ORDER BY rating DESC, created_at DESC");
 $stmt->execute(['problem_id' => $problem_id]);
 $solutions = $stmt->fetchAll();
@@ -20,64 +29,116 @@ $solutions = $stmt->fetchAll();
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<title><?= htmlspecialchars($problem['title']) ?> - StormBrainer</title>
-<link rel="stylesheet" href="style.css">
+  <meta charset="UTF-8">
+  <title><?= htmlspecialchars($problem['title']) ?> - StormBrainer</title>
+  <link rel="stylesheet" href="style.css">
+  <style>
+    h2 { text-align:center; margin-top:20px; }
+  .solution-space { display:flex; flex-wrap:wrap; justify-content:center; gap:20px; margin:40px 0; }
+  .planet {
+    width:100px; height:100px; border-radius:50%;
+    background: radial-gradient(circle at 30% 30%, #4fc3f7, #01579b);
+    display:flex; align-items:center; justify-content:center;
+    font-size:0.8em; font-weight:bold; text-align:center;
+    cursor:pointer; transition: transform 0.3s, box-shadow 0.3s;
+    box-shadow:0 0 20px rgba(79,195,247,0.6);
+  }
+  .planet:hover { transform:scale(1.2); box-shadow:0 0 40px rgba(79,195,247,0.9); }
+  #solution-detail {
+    position:fixed; bottom:20px; left:50%; transform:translateX(-50%);
+    background:rgba(0,0,0,0.85); color:white;
+    padding:15px 20px; border-radius:15px;
+    display:none; z-index:999;
+    max-width:400px; text-align:center;
+  }
+</style>
 </head>
 <body data-theme="<?= $theme ?>">
+  <div class="stars"></div>
+  <div class="stars2"></div>
+  <div class="stars3"></div>
 
-<!-- ANIMATED STAR BACKGROUND -->
-<div class="stars"></div>
-<div class="stars2"></div>
-<div class="stars3"></div>
+  <main class="problem-view">
+    <section class="problem-header">
+      <h2><?= htmlspecialchars($problem['title']) ?></h2>
+      <p class="description"><?= nl2br(htmlspecialchars($problem['description'])) ?></p>
+      <p class="rating-display">⭐ <?= $problem['rating'] ?> points</p>
 
-<main class="problem-view">
-  <section class="problem-header">
-    <h2><?= htmlspecialchars($problem['title']) ?></h2>
-    <p class="description"><?= nl2br(htmlspecialchars($problem['description'])) ?></p>
-    <p class="rating-display">⭐ <?= $problem['rating'] ?> points</p>
-  </section>
+      <?php if ($problem['user_id'] != $user_id): ?>
+        <form method="POST" action="rate.php">
+          <input type="hidden" name="entity_type" value="problem">
+          <input type="hidden" name="entity_id" value="<?= $problem['id'] ?>">
+          <button class="btn small">+1 Problem</button>
+        </form>
+      <?php else: ?>
+        <p class="note">You cannot +1 your own problem.</p>
+      <?php endif; ?>
 
-  <hr>
+      <?php if ($problem['user_id'] == $user_id): ?>
+        <p class="actions">
+          <a href="edit_problem.php?id=<?= $problem['id'] ?>" class="btn">Edit</a>
+          <a href="delete_problem.php?id=<?= $problem['id'] ?>" class="btn danger">Delete</a>
+        </p>
+      <?php endif; ?>
+    </section>
 
-  <section class="solutions">
-    <h3>Solutions</h3>
-    <?php if (empty($solutions)): ?>
-      <p>No solutions yet. Be the first!</p>
-    <?php else: ?>
-      <div class="solution-space">
-        <?php foreach ($solutions as $s): 
-          $rating = (int)$s['rating'];
-          $minSize = 70;
-          $maxSize = 220;
-          $size = $minSize + min($rating * 12, $maxSize - $minSize);
-          $preview = htmlspecialchars(substr($s['content'], 0, 10));
-          $full = htmlspecialchars($s['content']);
-        ?>
-        <div class="planet" style="--size: <?= $size ?>px" data-full="<?= $full ?>">
-          <?= $preview ?>...
+    <hr>
+
+    <section class="solutions">
+      <h3>Solutions</h3>
+
+      <?php if (count($solutions) === 0): ?>
+        <p>No solutions yet. Be the first to suggest one!</p>
+      <?php else: ?>
+        <div class="solution-space">
+          <?php foreach ($solutions as $s): ?>
+            <?php
+              $rating = (int)$s['rating'];
+              $minSize = 70;
+              $maxSize = 220;
+              $size = $minSize + min($rating * 12, $maxSize - $minSize);
+              $preview = htmlspecialchars(substr($s['content'], 0, 10));
+            ?>
+            <div 
+              class="planet" 
+              style="--size: <?= $size ?>px;" 
+              data-full="<?= htmlspecialchars($s['content']) ?>"
+            >
+              <?= $preview ?>...
+            </div>
+          <?php endforeach; ?>
         </div>
-        <?php endforeach; ?>
-      </div>
-    <?php endif; ?>
-  </section>
+        <div id="solution-detail"></div>
+      <?php endif; ?>
+    </section>
 
-  <div id="solution-detail"></div>
+    <section class="add-solution">
+      <h4>Add a Solution</h4>
+      <form method="POST" action="add_solution.php">
+        <input type="hidden" name="problem_id" value="<?= $problem['id'] ?>">
+        <textarea name="content" required placeholder="Write your solution here..."></textarea><br>
+        <button type="submit" class="btn primary">Add Solution</button>
+      </form>
+    </section>
 
-</main>
+    <p class="back-link"><a href="index.php">&larr; Back to Problems</a></p>
+  </main>
 
-<script>
-document.querySelectorAll('.planet').forEach(planet => {
-    planet.addEventListener('mouseenter', () => {
-        const detail = document.getElementById('solution-detail');
+  <script>
+  document.addEventListener('DOMContentLoaded', () => {
+    const planets = document.querySelectorAll('.planet');
+    const detail = document.getElementById('solution-detail');
+
+    planets.forEach(planet => {
+      planet.addEventListener('mouseenter', () => {
         detail.textContent = planet.dataset.full;
         detail.style.display = 'block';
+      });
+      planet.addEventListener('mouseleave', () => {
+        detail.style.display = 'none';
+      });
     });
-    planet.addEventListener('mouseleave', () => {
-        document.getElementById('solution-detail').style.display = 'none';
-    });
-});
-</script>
-
+  });
+  </script>
 </body>
 </html>
