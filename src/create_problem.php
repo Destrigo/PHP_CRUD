@@ -22,6 +22,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $error = "Title and description cannot be empty.";
     }
 }
+renderHeader();
 ?>
 
 <!DOCTYPE html>

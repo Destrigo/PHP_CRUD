@@ -3,8 +3,6 @@ include 'db.php'; // Connect to database
 include 'auth.php';
 // Redirect to login if not logged in
 requireLogin();
-// Render the main header/navigation
-renderHeader();
 
 $user_id = $_SESSION['user_id'];
 
@@ -40,11 +38,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         'description' => $description,
         'id' => $id
     ]);
-
     // Redirect back to the problem list
     header("Location: index.php");
     exit;
 }
+// Render the main header/navigation
+renderHeader();
 ?>
 
 <!DOCTYPE html>

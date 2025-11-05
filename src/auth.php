@@ -1,18 +1,5 @@
 <?php
 session_start();
-// Call this function on pages that require authentication
-// requireLogin();
-// Determine current theme
-if (!isset($_SESSION['theme'])) {
-    $_SESSION['theme'] = 'light';
-}
-if (isset($_POST['toggle_theme'])) {
-    $_SESSION['theme'] = ($_SESSION['theme'] ?? 'light') === 'light' ? 'dark' : 'light';
-    $qs = $_SERVER['QUERY_STRING'] ? '?' . $_SERVER['QUERY_STRING'] : '';
-    header("Location: " . $_SERVER['PHP_SELF'] . $qs);
-    exit;
-}
-$theme = $_SESSION['theme'];
 
 // Redirect to login if user is not logged in
 function requireLogin() {
@@ -21,6 +8,23 @@ function requireLogin() {
         exit;
     }
 }
+
+if (!isset($_SESSION['theme'])) {
+    $_SESSION['theme'] = 'light';
+}
+if (isset($_POST['toggle_theme'])) {
+    $_SESSION['theme'] = ($_SESSION['theme'] ?? 'light') === 'light' ? 'dark' : 'light';
+
+    // Mantiene l'ID della pagina corrente (se presente)
+    $redirect = $_SERVER['PHP_SELF'];
+    if (!empty($_GET['id'])) {
+        $redirect .= '?id=' . urlencode($_GET['id']);
+    }
+
+    header("Location: $redirect");
+    exit;
+}
+$theme = $_SESSION['theme'];
 
 
 // Helper function to display header/navigation
@@ -54,4 +58,3 @@ function renderHeader() {
     <hr>
     <?php
 }
-?>

@@ -1,22 +1,33 @@
 <?php
 include 'db.php';
 include 'auth.php';
-// Redirect to login if not logged in
 requireLogin();
 
-$user_id = $_SESSION['user_id'];
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    $user_id = $_SESSION['user_id'];
+    $problem_id = $_POST['problem_id'] ?? null;
+    $content = trim($_POST['content'] ?? '');
 
-$stmt = $conn->prepare("INSERT INTO problems (title, description, user_id) VALUES (:title, :description, :user_id)");
-$stmt->execute(['title'=>$title, 'description'=>$description, 'user_id'=>$user_id]);
+    if (!$problem_id || !$content) {
+        die("Missing required fields.");
+    }
 
-if ($_SERVER['REQUEST_METHOD']==='POST') {
-    $problem_id = $_POST['problem_id'];
-    $content = $_POST['content'];
+    // Inserisci la soluzione nel database
+    $stmt = $conn->prepare("
+        INSERT INTO solutions (problem_id, user_id, content, created_at)
+        VALUES (:problem_id, :user_id, :content, NOW())
+    ");
+    $stmt->execute([
+        'problem_id' => $problem_id,
+        'user_id' => $user_id,
+        'content' => $content
+    ]);
 
-    $stmt = $conn->prepare("INSERT INTO solutions (problem_id, content) VALUES (:pid, :content)");
-    $stmt->execute(['pid'=>$problem_id,'content'=>$content]);
-
-    header("Location: view_problem.php?id=$problem_id");
+    // Reindirizza alla pagina del problema
+    header("Location: view_problem.php?id=" . urlencode($problem_id));
     exit;
+} else {
+    die("Invalid request method.");
 }
 ?>
+
